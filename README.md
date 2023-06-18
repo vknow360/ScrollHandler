@@ -2,7 +2,7 @@
 Extension to handle the scroll and properties of Scroll Views (For MIT AI2 and its distros)
 
 **Latest Version:** 1.4 <br>
-**Last Updated:** July 6,2021 <br>
+**Last Updated:** June 18, 2023 <br>
 
 ### Blocks 
 ![image](https://user-images.githubusercontent.com/41724811/124578818-2dbb0e80-de6c-11eb-82ef-ab5c94076524.png) <br>
