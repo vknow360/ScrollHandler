@@ -10,7 +10,7 @@ import com.google.appinventor.components.annotations.*;
 import com.google.appinventor.components.common.ComponentCategory;
 import com.google.appinventor.components.runtime.*;
 @DesignerComponent(version = 1,
-        versionName="1.3",
+        versionName="1.4",
         description = "Handle the scroll of scroll views<br>Developed by Sunny Gupta",
         category = ComponentCategory.EXTENSION,
         nonVisible = true,
@@ -219,7 +219,7 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
     public int VMaxScroll(){
         if (scrollView != null) {
             View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
-            return d2p(view.getBottom() - scrollView.getWidth());
+            return d2p(view.getBottom() - scrollView.getHeight());
         }
         return 0;
     }
