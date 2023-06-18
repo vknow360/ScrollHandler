@@ -1,7 +1,7 @@
 # ScrollHandler
 Extension to handle the scroll and properties of Scroll Views (For MIT AI2 and its distros)
 
-**Latest Version:** 1.3 <br>
+**Latest Version:** 1.4 <br>
 **Last Updated:** July 6,2021 <br>
 
 ### Blocks 
