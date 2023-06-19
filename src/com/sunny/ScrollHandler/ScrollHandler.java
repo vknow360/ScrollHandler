@@ -432,6 +432,18 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
       scrollView.setBottomEdgeEffectColor(color);
     }
   }
+  @SimpleProperty()
+  public void VFadingEdgeEnabled(boolean b){
+    if (scrollView != null){
+      scrollView.setVerticalFadingEdgeEnabled(b);
+    }
+  }
+  @SimpleFunction()
+  public void HFadingEdgeEnabled(boolean b){
+    if (hscrollView != null){
+      hscrollView.setHorizontalFadingEdgeEnabled(b);
+    }
+  }
   @SimpleProperty(description="Sets smooth scrolling speed for hsa.Setting it 0 will reset the speed.")
   public void HSmoothScrollSpeed(int millis){
     hScrollSpeed = millis;
