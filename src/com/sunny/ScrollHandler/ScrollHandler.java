@@ -1,10 +1,11 @@
 package com.sunny.ScrollHandler;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.EdgeEffect;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import com.google.appinventor.components.annotations.SimpleEvent;
@@ -16,15 +17,16 @@ import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.HorizontalScrollArrangement;
 import com.google.appinventor.components.runtime.VerticalScrollArrangement;
 
+import java.lang.reflect.Field;
+
 public class ScrollHandler extends AndroidNonvisibleComponent{
   private final float deviceDensity;
-  private HorizontalScrollView hscrollView;
+  private HorizontalScrollView hScrollView;
   private ScrollView scrollView;
   private int hScrollSpeed = 0;
   private int scrollSpeed = 0;
   public ScrollHandler(ComponentContainer container){
     super(container.$form());
-    Activity activity = container.$context();
     deviceDensity = container.$form().deviceDensity();
   }
   private int d2p(int d){
@@ -33,33 +35,57 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   private int p2d(int p){
     return Math.round(p*deviceDensity);
   }
-  @SimpleFunction(description="Registers given horizonatal scroll arrangement for method execution")
+  @SimpleEvent(description = "Event raised when HSA reach left")
+  public void HReachLeft(){
+    EventDispatcher.dispatchEvent(this,"HReachLeft");
+  }
+  @SimpleEvent(description = "Event raised when HSA reach right")
+  public void HReachRight(){
+    EventDispatcher.dispatchEvent(this,"HReachRight");
+  }
+  @SimpleEvent(description = "Event raised when VSA reach top")
+  public void VReachTop(){
+    EventDispatcher.dispatchEvent(this,"VReachTop");
+  }
+  @SimpleEvent(description = "Event raised when VSA reach bottom")
+  public void VReachBottom(){
+    EventDispatcher.dispatchEvent(this,"VReachBottom");
+  }
+  @SimpleFunction(description="Registers given horizontal scroll arrangement for method execution")
   public void RegisterHSA(HorizontalScrollArrangement hsa){
-    if (hscrollView == null) {
-      hscrollView = (HorizontalScrollView)hsa.getView();
-      hscrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+    if (hScrollView == null) {
+      hScrollView = (HorizontalScrollView)hsa.getView();
+      hScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
         @Override
         public void onScrollChanged() {
-          if (hscrollView != null) {
-            OnHScroll(d2p(hscrollView.getScrollX()));
+          if (hScrollView != null) {
+            OnHScroll(d2p(hScrollView.getScrollX()));
+            if (HGetScrollX() == 0){
+              HReachLeft();
+            }else if (HMaxScroll() - HGetScrollX() <= 0){
+              HReachRight();
+            }
           }
         }
       });
     }
   }
-  /*@SimpleFunction
-  public int Density(){
-      return deviceDensity;
-  }*/
+
   @SimpleFunction(description="Registers given vertical scroll arrangement for method execution")
   public void RegisterVSA(VerticalScrollArrangement vsa){
     if (scrollView == null) {
       scrollView = (ScrollView)vsa.getView();
+      scrollView.setSmoothScrollingEnabled(true);
       scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
         @Override
         public void onScrollChanged() {
           if (scrollView != null) {
             OnVScroll(d2p(scrollView.getScrollY()));
+            if (VGetScrollY() == 0){
+              VReachTop();
+            }else if (VMaxScroll() - VGetScrollY() <= 0){
+              VReachBottom();
+            }
           }
         }
       });
@@ -68,8 +94,8 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   @SimpleFunction(description="Toggles scrolling of specific scroll view")
   public void ToggleScrolling(final boolean enable,boolean hscrollView){
     if (hscrollView) {
-      if (this.hscrollView != null) {
-        this.hscrollView.setOnTouchListener(new View.OnTouchListener() {
+      if (this.hScrollView != null) {
+        this.hScrollView.setOnTouchListener(new View.OnTouchListener() {
           @Override
           public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN){
@@ -99,11 +125,11 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Set the scrolled position of your view.sX and yX are the scroll position of view.If hScrollView value is true then method will be executed for hsa.")
   public void ScrollTo(final int sX,final int sY,boolean hScrollView){
-    if (hScrollView && hscrollView != null){
-      hscrollView.postDelayed(new Runnable() {
+    if (hScrollView && this.hScrollView != null){
+      this.hScrollView.postDelayed(new Runnable() {
         @Override
         public void run() {
-          hscrollView.scrollTo(p2d(sX),p2d(sY));
+          ScrollHandler.this.hScrollView.scrollTo(p2d(sX),p2d(sY));
         }
       }, 300);
     }else if(!hScrollView && scrollView != null){
@@ -117,15 +143,15 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Smoothly scrolls to given position.If any speed is set then it will use that speed for scrolling.")
   public void SmoothScrollTo(final int sX,final int sY,boolean hScrollView){
-    if (hScrollView && hscrollView != null){
+    if (hScrollView && this.hScrollView != null){
       if (hScrollSpeed != 0) {
-        ObjectAnimator.ofInt(hscrollView,"scrollX",p2d(sX)).setDuration(hScrollSpeed).start();
+        ObjectAnimator.ofInt(this.hScrollView,"scrollX",p2d(sX)).setDuration(hScrollSpeed).start();
         return;
       }
-      hscrollView.postDelayed(new Runnable() {
+      this.hScrollView.postDelayed(new Runnable() {
         @Override
         public void run() {
-          hscrollView.smoothScrollTo(p2d(sX),p2d(sY));
+          ScrollHandler.this.hScrollView.smoothScrollTo(p2d(sX),p2d(sY));
         }
       }, 300);
     }else if(!hScrollView && scrollView != null){
@@ -143,11 +169,11 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Scrolls to given position by pixels.pX and pY are pixel value of scroll position.If hScrollView value is true then method will be executed for hsa.")
   public void ScrollBy(final int pX,final int pY,boolean hScrollView){
-    if (hScrollView && hscrollView != null){
-      hscrollView.postDelayed(new Runnable() {
+    if (hScrollView && this.hScrollView != null){
+      this.hScrollView.postDelayed(new Runnable() {
         @Override
         public void run() {
-          hscrollView.scrollBy(p2d(pX),p2d(pY));
+          ScrollHandler.this.hScrollView.scrollBy(p2d(pX),p2d(pY));
         }
       }, 300);
     }else if(!hScrollView && scrollView != null){
@@ -161,15 +187,15 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Smoothly scrolls by the given pixel position of view.If any speed is set then it will use that speed for scrolling.")
   public void SmoothScrollBy(final int pX,final int pY,boolean hScrollView){
-    if (hScrollView && hscrollView != null) {
+    if (hScrollView && this.hScrollView != null) {
       if (hScrollSpeed != 0) {
-        ObjectAnimator.ofInt(hscrollView,"scrollX",p2d(pX)).setDuration(hScrollSpeed).start();
+        ObjectAnimator.ofInt(this.hScrollView,"scrollX",p2d(pX)).setDuration(hScrollSpeed).start();
         return;
       }
-      hscrollView.postDelayed(new Runnable() {
+      this.hScrollView.postDelayed(new Runnable() {
         @Override
         public void run() {
-          hscrollView.smoothScrollBy(p2d(pX),p2d(pY));
+          ScrollHandler.this.hScrollView.smoothScrollBy(p2d(pX),p2d(pY));
         }
       }, 300);
     }else if(!hScrollView && scrollView != null){
@@ -193,8 +219,8 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Handle scrolling in response to an left or right arrow click.")
   public void HArrowScroll(int direction){
-    if (hscrollView != null) {
-      hscrollView.arrowScroll(direction);
+    if (hScrollView != null) {
+      hScrollView.arrowScroll(direction);
     }
 
   }
@@ -207,9 +233,9 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Returns max scroll position of hsa.0 if no view is registered.")
   public int HMaxScroll(){
-    if (hscrollView != null) {
-      View view = hscrollView.getChildAt(hscrollView.getChildCount() - 1);
-      return d2p(view.getRight() - hscrollView.getWidth());
+    if (hScrollView != null) {
+      View view = hScrollView.getChildAt(hScrollView.getChildCount() - 1);
+      return d2p(view.getRight() - hScrollView.getWidth());
     }
     return 0;
   }
@@ -223,25 +249,12 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Returns current scrollX position of hsa.0 if no view is registered.")
   public int HGetScrollX(){
-    if (hscrollView != null) {
-      return d2p(hscrollView.getScrollX());
+    if (hScrollView != null) {
+      return d2p(hScrollView.getScrollX());
     }
     return 0;
   }
-  /*@SimpleFunction
-  public int VGetBottom(){
-      if (scrollView != null) {
-          return d2p(scrollView.getBottom());
-      }
-      return 0;
-  }
-  @SimpleFunction
-  public int HGetRight(){
-      if (hscrollView != null) {
-          return d2p(hscrollView.getRight());
-      }
-      return 0;
-  }*/
+
   @SimpleFunction(description = "Returns whether VSA can scroll in up(-1) and down(1)")
   public boolean CanVSAScrollVertically(int direction){
     if (scrollView != null) {
@@ -251,25 +264,11 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description = "Returns whether HSA can scroll in left(-1) and right(1)")
   public boolean CanHSAScrollHorizontally(int direction){
-    if (hscrollView != null) {
-      return hscrollView.canScrollHorizontally(direction);
+    if (hScrollView != null) {
+      return hScrollView.canScrollHorizontally(direction);
     }
     return false;
   }
-  /*@SimpleFunction
-  public int HGetLeft(){
-      if (hscrollView != null) {
-          return d2p(hscrollView.getLeft());
-      }
-      return 0;
-  }
-  @SimpleFunction
-  public int VGetTop(){
-      if (scrollView != null) {
-          return d2p(scrollView.getTop());
-      }
-      return 0;
-  }*/
   @SimpleFunction(description="Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.")
   public void VPageScroll(int direction){
     if (scrollView != null) {
@@ -278,8 +277,8 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topleft/right component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.")
   public void HPageScroll(int direction){
-    if (hscrollView != null) {
-      hscrollView.pageScroll(direction);
+    if (hScrollView != null) {
+      hScrollView.pageScroll(direction);
     }
   }
   @SimpleFunction(description="Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the top or bottom and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.")
@@ -290,14 +289,14 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the left or right and give the focus to the leftmost/rightmost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.")
   public void HFullScroll(int direction){
-    if (hscrollView != null) {
-      hscrollView.fullScroll(direction);
+    if (hScrollView != null) {
+      hScrollView.fullScroll(direction);
     }
   }
   @SimpleFunction(description="Unregisters previously registered hsa.")
   public void UnregisterHSA(){
-    if(hscrollView != null){
-      hscrollView = null;
+    if(hScrollView != null){
+      hScrollView = null;
     }
   }
   @SimpleFunction(description="Unregisters previously registered vsa.")
@@ -314,8 +313,8 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   }
   @SimpleFunction(description="Fling the hsa with given velocity.Positive numbers mean that the finger/cursor is moving right the screen, which means we want to scroll towards the left.")
   public void HFling(int velocityX){
-    if (hscrollView != null) {
-      hscrollView.fling(velocityX);
+    if (hScrollView != null) {
+      hScrollView.fling(velocityX);
     }
   }
   @SimpleEvent(description="Event raised when a scroll happens in vsa.")
@@ -342,106 +341,61 @@ public class ScrollHandler extends AndroidNonvisibleComponent{
   public void OnVTouchDown(){
     EventDispatcher.dispatchEvent(this,"OnVTouchDown");
   }
-  /*@SimpleProperty(description = "Sets whether scrolling should be enabled in hsa")
-  public void BlockHScroll(boolean block){
-      blockHScroll = block;
-      if (hscrollView != null){
-          hscrollView.setOnTouchListener(new View.OnTouchListener() {
-              @Override
-              public boolean onTouch(View view, MotionEvent motionEvent) {
-                  return blockHScroll;
-              }
-          });
-      }
-  }
-  @SimpleProperty(description = "Returns whether scrolling is enabled in hsa")
-  public boolean BlockHScroll(){
-      return blockHScroll;
-  }
 
-  @SimpleProperty(description = "Sets whether scrolling should be enabled in vsa")
-  public void BlockVScroll(boolean block){
-      blockScroll = block;
-      if (scrollView != null){
-          scrollView.setOnTouchListener(new View.OnTouchListener() {
-              @Override
-              public boolean onTouch(View view, MotionEvent motionEvent) {
-                  return blockScroll;
-              }
-          });
-      }
-  }
-  @SimpleProperty(description = "Returns whether scrolling is enabled in vsa")
-  public boolean BlockVScroll(){
-      return blockScroll;
-  }*/
   @SimpleProperty(description="Sets the edge effect color for both left and right edge effects of hsa.")
   public void HSetEdgeEffectColor(int color){
-    if (hscrollView != null){
-      hscrollView.setEdgeEffectColor(color);
+    if (hScrollView != null){
+      if (Build.VERSION.SDK_INT >= 29) {
+        hScrollView.setEdgeEffectColor(color);
+      }else {
+        EdgeEffect edgeEffectRight = new EdgeEffect(form.$context());
+        edgeEffectRight.setColor(color);
+        try {
+          Field f1 = HorizontalScrollView.class.getDeclaredField("mEdgeGlowRight");
+          f1.setAccessible(true);
+          f1.set(hScrollView, edgeEffectRight);
+          Field f2 = ScrollView.class.getDeclaredField("mEdgeGlowLeft");
+          f2.setAccessible(true);
+          f2.set(hScrollView, edgeEffectRight);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
   @SimpleProperty(description="Sets the edge effect color for both top and bottom edge effects of vsa.")
   public void VSetEdgeEffectColor(int color){
     if (scrollView != null){
-      scrollView.setEdgeEffectColor(color);
+      if (Build.VERSION.SDK_INT >= 29) {
+        scrollView.setEdgeEffectColor(color);
+      }else {
+        EdgeEffect edgeEffectBottom = new EdgeEffect(form.$context());
+        edgeEffectBottom.setColor(color);
+        try {
+          Field f1 = ScrollView.class.getDeclaredField("mEdgeGlowBottom");
+          f1.setAccessible(true);
+          f1.set(scrollView, edgeEffectBottom);
+          Field f2 = ScrollView.class.getDeclaredField("mEdgeGlowTop");
+          f2.setAccessible(true);
+          f2.set(scrollView, edgeEffectBottom);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
-  @SimpleProperty(description="Sets the left edge effect color of hsa.")
-  public void HSetLeftEdgeEffectColor(int color){
-    if (hscrollView != null){
-      hscrollView.setLeftEdgeEffectColor(color);
-    }
-  }
-  @SimpleProperty(description="Sets the right edge effect color of hsa.")
-  public void HSetRightEdgeEffectColor(int color){
-    if (hscrollView != null){
-      hscrollView.setRightEdgeEffectColor(color);
-    }
-  }
-  @SimpleProperty(description="Sets the top edge effect color.")
-  public void VSetTopEdgeEffectColor(int color){
-    if (scrollView != null){
-      scrollView.setTopEdgeEffectColor(color);
-    }
-  }
-  @SimpleProperty(description="Returns the top edge effect color of vsa.")
-  public int VGetTopEdgeEffectColor(){
-    if (scrollView != null){
-      return scrollView.getTopEdgeEffectColor();
-    }
-    return 0;
-  }
-  @SimpleProperty(description="Returns the right edge effect color of hsa.")
-  public int HGetRightEdgeEffectColor(){
-    if (hscrollView != null){
-      return hscrollView.getRightEdgeEffectColor();
-    }
-    return 0;
-  }
-  @SimpleProperty(description="Returns the left edge effect color of hsa.")
-  public int HGetLeftEdgeEffectColor(){
-    if (hscrollView != null){
-      return hscrollView.getLeftEdgeEffectColor();
-    }
-    return 0;
-  }
-  @SimpleProperty(description="Sets the bottom edge effect color.")
-  public void VSetBottomEdgeEffectColor(int color){
-    if (scrollView != null){
-      scrollView.setBottomEdgeEffectColor(color);
-    }
-  }
-  @SimpleProperty()
+
+
+  @SimpleProperty(description = "Sets fading edge effect in VScroll View")
   public void VFadingEdgeEnabled(boolean b){
     if (scrollView != null){
       scrollView.setVerticalFadingEdgeEnabled(b);
     }
   }
-  @SimpleFunction()
+  @SimpleFunction(description = "Sets fading edge effect in HScroll View")
   public void HFadingEdgeEnabled(boolean b){
-    if (hscrollView != null){
-      hscrollView.setHorizontalFadingEdgeEnabled(b);
+    if (hScrollView != null){
+      hScrollView.setHorizontalFadingEdgeEnabled(b);
     }
   }
   @SimpleProperty(description="Sets smooth scrolling speed for hsa.Setting it 0 will reset the speed.")
