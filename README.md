@@ -1,10 +1,12 @@
 # ScrollHandler
+
 Extension to handle the scroll and properties of Scroll Views (For MIT AI2 and its distros)
 
 **Latest Version:** 1.4 <br>
 **Last Updated:** July 27, 2023 <br>
 
-### Blocks 
+### Blocks
+
 ![image](https://user-images.githubusercontent.com/41724811/124578818-2dbb0e80-de6c-11eb-82ef-ab5c94076524.png) <br>
 ![image](https://user-images.githubusercontent.com/41724811/124578868-3b709400-de6c-11eb-94f4-a9c3c581d8bf.png) <br>
 ![image](https://user-images.githubusercontent.com/41724811/124578925-49beb000-de6c-11eb-9609-8d47159f6a79.png) <br>
@@ -13,209 +15,10 @@ Extension to handle the scroll and properties of Scroll Views (For MIT AI2 and i
 
 ### Documentation
 
-> <h3>OnHScroll</h3>Event raised when a scroll happens in hsa.
-Params           |  []()       
----------------- | ------- 
-
-```` scrollX | number````
-
- <br> 
-
-> <h3>OnHTouchDown</h3>Event indicating a touch down on hsa.
- <br> 
-
-> <h3>OnHTouchUp</h3>Event indicating a touch up on hsa.
- <br> 
-
-> <h3>OnVScroll</h3>Event raised when a scroll happens in vsa.
-Params           |  []()       
----------------- | ------- 
-
-```` scrollY | number````
-
- <br> 
-
-> <h3>OnVTouchDown</h3>Event indicating a touch down on vsa.
- <br> 
-
-> <h3>OnVTouchUp</h3>Event indicating a touch up on vsa.
- <br> 
-
-> <h3>CanHSAScrollHorizontally</h3>Returns whether HSA can scroll in left(-1) and right(1)
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
-<br> <i>Return type : boolean</i>
-
- <br> 
-
-> <h3>CanVSAScrollVertically</h3>Returns whether VSA can scroll in up(-1) and down(1)
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
-<br> <i>Return type : boolean</i>
-
- <br> 
-
-> <h3>HArrowScroll</h3>Handle scrolling in response to an left or right arrow click.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
-
-> <h3>HFling</h3>Fling the hsa with given velocity.Positive numbers mean that the finger/cursor is moving right the screen, which means we want to scroll towards the left.
-Params           |  []()       
----------------- | ------- 
-
-```` velocityX | number````<br>
-
- <br> 
-
-> <h3>HFullScroll</h3>Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the left or right and give the focus to the leftmost/rightmost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
-
-> <h3>HGetScrollX</h3>Returns current scrollX position of hsa.0 if no view is registered.
-<br> <i>Return type : number</i>
-
- <br> 
-
-> <h3>HMaxScroll</h3>Returns max scroll position of hsa.0 if no view is registered.
-<br> <i>Return type : number</i>
-
- <br> 
-
-> <h3>HPageScroll</h3>Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topleft/right component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
-
-> <h3>RegisterHSA</h3>Registers given horizonatal scroll arrangement for method execution
-Params           |  []()       
----------------- | ------- 
-
-```` hsa | component````<br>
-
- <br> 
-
-> <h3>RegisterVSA</h3>Registers given vertical scroll arrangement for method execution
-Params           |  []()       
----------------- | ------- 
-
-```` vsa | component````<br>
-
- <br> 
-
-> <h3>ScrollBy</h3>Scrolls to given position by pixels.pX and pY are pixel value of scroll position.If hScrollView value is true then method will be executed for hsa.
-Params           |  []()       
----------------- | ------- 
-
-```` pX | number````<br>
-```` pY | number````<br>
-```` hScrollView | boolean````<br>
-
- <br> 
-
-> <h3>ScrollTo</h3>Set the scrolled position of your view.sX and yX are the scroll position of view.If hScrollView value is true then method will be executed for hsa.
-Params           |  []()       
----------------- | ------- 
-
-```` sX | number````<br>
-```` sY | number````<br>
-```` hScrollView | boolean````<br>
-
- <br> 
-
-> <h3>SmoothScrollBy</h3>Smoothly scrolls by the given pixel position of view.If any speed is set then it will use that speed for scrolling.
-Params           |  []()       
----------------- | ------- 
-
-```` pX | number````<br>
-```` pY | number````<br>
-```` hScrollView | boolean````<br>
-
- <br> 
-
-> <h3>SmoothScrollTo</h3>Smoothly scrolls to given position.If any speed is set then it will use that speed for scrolling.
-Params           |  []()       
----------------- | ------- 
-
-```` sX | number````<br>
-```` sY | number````<br>
-```` hScrollView | boolean````<br>
-
- <br> 
-
-> <h3>ToggleScrolling</h3>Toggles scrolling of specific scroll view
-Params           |  []()       
----------------- | ------- 
-
-```` enable | boolean````<br>
-```` hscrollView | boolean````<br>
-
- <br> 
-
-> <h3>UnregisterHSA</h3>Unregisters previously registered hsa.
- <br> 
-
-> <h3>UnregisterVSA</h3>Unregisters previously registered vsa.
- <br> 
-
-> <h3>VArrowScroll</h3>Handle scrolling in response to an up or down arrow click.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
-
-> <h3>VFling</h3>Fling the vsa with given velocity.Positive numbers mean that the finger/cursor is moving down the screen, which means we want to scroll towards the top.
-Params           |  []()       
----------------- | ------- 
-
-```` velocityY | number````<br>
-
- <br> 
-
-> <h3>VFullScroll</h3>Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the top or bottom and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
-
-> <h3>VGetScrollY</h3>Returns current scrollY position of vsa.0 if no view is registered.
-<br> <i>Return type : number</i>
-
- <br> 
-
-> <h3>VMaxScroll</h3>Returns max scroll position of vsa.0 if no view is registered.
-<br> <i>Return type : number</i>
-
- <br> 
-
-> <h3>VPageScroll</h3>Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.
-Params           |  []()       
----------------- | ------- 
-
-```` direction | number````<br>
-
- <br> 
+<figure class="wp-block-table"><table><tbody><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">HReachLeft</mark></strong></td><td>Event raised when HSA reach left</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">HReachRight</mark></strong></td><td>Event raised when HSA reach right</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">VReachTop</mark></strong></td><td>Event raised when VSA reach top</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">VReachBottom</mark></strong></td><td>Event raised when VSA reach bottom</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnVScroll</mark></strong></td><td>Event raised when a scroll happens in vsa.<br><em><sub><code>scrollY | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnHScroll</mark></strong></td><td>Event raised when a scroll happens in hsa.<br><em><sub><code>scrollX | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnHTouchDown</mark></strong></td><td>Event indicating a touch down on hsa.</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnHTouchUp</mark></strong></td><td>Event indicating a touch up on hsa.</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnVTouchUp</mark></strong></td><td>Event indicating a touch up on vsa.</td></tr><tr><td><strong><mark style="background-color:#D1A73F" class="has-inline-color">OnVTouchDown</mark></strong></td><td>Event indicating a touch down on vsa.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">RegisterHSA</mark></strong></td><td>Registers given horizontal scroll arrangement for method execution<br><em><sub><code>hsa | component</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">RegisterVSA</mark></strong></td><td>Registers given vertical scroll arrangement for method execution<br><em><sub><code>vsa | component</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">ToggleScrolling</mark></strong></td><td>Toggles scrolling of specific scroll view<br><em><sub><code>enable | boolean</code><br><code>hscrollView | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">ScrollTo</mark></strong></td><td>Set the scrolled position of your view.sX and yX are the scroll position of view.If hScrollView value is true then method will be executed for hsa.<br><em><sub><code>sX | number</code><br><code>sY | number</code><br><code>hScrollView | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">SmoothScrollTo</mark></strong></td><td>Smoothly scrolls to given position.If any speed is set then it will use that speed for scrolling.<br><em><sub><code>sX | number</code><br><code>sY | number</code><br><code>hScrollView | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">ScrollBy</mark></strong></td><td>Scrolls to given position by pixels.pX and pY are pixel value of scroll position.If hScrollView value is true then method will be executed for hsa.<br><em><sub><code>pX | number</code><br><code>pY | number</code><br><code>hScrollView | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">SmoothScrollBy</mark></strong></td><td>Smoothly scrolls by the given pixel position of view.If any speed is set then it will use that speed for scrolling.<br><em><sub><code>pX | number</code><br><code>pY | number</code><br><code>hScrollView | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VArrowScroll</mark></strong></td><td>Handle scrolling in response to an up or down arrow click.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HArrowScroll</mark></strong></td><td>Handle scrolling in response to an left or right arrow click.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VGetScrollY</mark></strong></td><td>Returns current scrollY position of vsa.0 if no view is registered.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HMaxScroll</mark></strong></td><td>Returns max scroll position of hsa.0 if no view is registered.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VMaxScroll</mark></strong></td><td>Returns max scroll position of vsa.0 if no view is registered.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HGetScrollX</mark></strong></td><td>Returns current scrollX position of hsa.0 if no view is registered.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">CanVSAScrollVertically</mark></strong></td><td>Returns whether VSA can scroll in up(-1) and down(1)<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">CanHSAScrollHorizontally</mark></strong></td><td>Returns whether HSA can scroll in left(-1) and right(1)<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VPageScroll</mark></strong></td><td>Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HPageScroll</mark></strong></td><td>Handles scrolling in response to a 'page up/down' shortcut press. This method will scroll the view by one page up or down and give the focus to the topleft/right component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VFullScroll</mark></strong></td><td>Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the top or bottom and give the focus to the topmost/bottommost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HFullScroll</mark></strong></td><td>Handles scrolling in response to a 'home/end' shortcut press. This method will scroll the view to the left or right and give the focus to the leftmost/rightmost component in the new visible area. If no component is a good candidate for focus, this scrollview reclaims the focus.<br><em><sub><code>direction | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">UnregisterHSA</mark></strong></td><td>Unregisters previously registered hsa.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">UnregisterVSA</mark></strong></td><td>Unregisters previously registered vsa.</td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">VFling</mark></strong></td><td>Fling the vsa with given velocity.Positive numbers mean that the finger/cursor is moving down the screen, which means we want to scroll towards the top.<br><em><sub><code>velocityY | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HFling</mark></strong></td><td>Fling the hsa with given velocity.Positive numbers mean that the finger/cursor is moving right the screen, which means we want to scroll towards the left.<br><em><sub><code>velocityX | number</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#9B51E0" class="has-inline-color">HFadingEdgeEnabled</mark></strong></td><td>Sets fading edge effect in HScroll View<br><em><sub><code>b | boolean</code><br></sub></em></td></tr><tr><td><strong><mark style="background-color:#33A265" class="has-inline-color">HSetEdgeEffectColor</mark></strong></td><td>Sets the edge effect color for both left and right edge effects of hsa.<br><b>Property Type : </b>write-only<br><b>Accepts : </b>number<br></td></tr><tr><td><strong><mark style="background-color:#33A265" class="has-inline-color">VSetEdgeEffectColor</mark></strong></td><td>Sets the edge effect color for both top and bottom edge effects of vsa.<br><b>Property Type : </b>write-only<br><b>Accepts : </b>number<br></td></tr><tr><td><strong><mark style="background-color:#33A265" class="has-inline-color">VFadingEdgeEnabled</mark></strong></td><td>Sets fading edge effect in VScroll View<br><b>Property Type : </b>write-only<br><b>Accepts : </b>boolean<br></td></tr><tr><td><strong><mark style="background-color:#33A265" class="has-inline-color">HSmoothScrollSpeed</mark></strong></td><td>Sets smooth scrolling speed for hsa.Setting it 0 will reset the speed.<br><b>Property Type : </b>write-only<br><b>Accepts : </b>number<br></td></tr><tr><td><strong><mark style="background-color:#33A265" class="has-inline-color">VSmoothScrollSpeed</mark></strong></td><td>Sets smooth scrolling speed for vsa.Setting it 0 will reset the speed.<br><b>Property Type : </b>write-only<br><b>Accepts : </b>number<br></td></tr></tbody></table></figure>
+<br>
 
 ### External Links
+
 https://community.kodular.io/t/scrollhandler-handle-the-scroll-of-scroll-views/78008 <br>
 http://sunnythedeveloper.epizy.com/2020/08/14/scrollhandler-handle-the-scroll-of-scroll-views <br>
